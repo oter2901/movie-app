@@ -5,18 +5,18 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-movie_api/.bundle
+**/.bundle
 
 # Ignore all logfiles and tempfiles.
-movie_api/log/*
-movie_api/tmp/*
-movie_api/log/.keep
-movie_api/tmp/.keep
+**/log/*
+**/tmp/*
+**/log/.keep
+**/tmp/.keep
 
 # Ignore uploaded files in development.
-movie_api/storage/*
+**/storage/*
 !/storage/.keep
-movie_api/.byebug_history
+**/.byebug_history
 
 # Ignore master key for decrypting credentials and more.
 movie_api/config/master.key
