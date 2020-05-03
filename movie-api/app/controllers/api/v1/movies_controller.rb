@@ -1,4 +1,6 @@
 class Api::V1::MoviesController < ApplicationController
+    before_action :authenticate_user!, except: [:show, :index]
+    
     def index
         @movies = Movie.all
         render json: @movies

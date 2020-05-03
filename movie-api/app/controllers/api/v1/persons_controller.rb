@@ -1,4 +1,5 @@
 class Api::V1::PersonsController < ApplicationController
+    before_action :authenticate_user!, except: [:show, :index]
     def index
         @persons = Person.all
         render json: @persons
