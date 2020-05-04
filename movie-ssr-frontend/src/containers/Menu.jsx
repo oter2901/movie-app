@@ -6,10 +6,10 @@ const MenuContainer = () => (
   <Menu fixed="top" inverted>
     <Container>
       <Menu.Item as="a" header>
-        <NavLink to="/persons">Movies App </NavLink>
+        <NavLink to="/movies">Movies App </NavLink>
       </Menu.Item>
       <Menu.Item as="a">
-        <NavLink to="/persons">Persons</NavLink>
+        <NavLink to="/people">People</NavLink>
       </Menu.Item>
       <Menu.Item as="a">
         <NavLink to="/movies">Movies</NavLink>

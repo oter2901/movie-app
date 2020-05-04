@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Button, Form, Modal } from "semantic-ui-react";
 import axios from "../axios";
 
-export const PersonsDropdown = ({ placeholder, persons, setPersons }) => {
+export const PeopleDropdown = ({ placeholder, people, setPeople }) => {
   return (
     <Form.Dropdown
       label={placeholder}
@@ -11,19 +11,19 @@ export const PersonsDropdown = ({ placeholder, persons, setPersons }) => {
       fluid
       multiple
       selection
-      onChange={(e, { value }) => setPersons(value)}
-      options={persons}
+      onChange={(e, { value }) => setPeople(value)}
+      options={people}
     />
   );
 };
 
-export const mapOptions = (persons) =>
-  persons.map((person) => ({
+export const mapOptions = (people) =>
+  people.map((person) => ({
     key: person.id,
     text: `${person["first_name"]} ${person["last_name"]}`,
     value: { person_id: person.id },
   }));
-const CreateMovieForm = ({ persons }) => {
+const CreateMovieForm = ({ people }) => {
   const [show, setShow] = useState(false);
   const [movieTitle, setMovieTitle] = useState("");
   const [releaseYear, setReleaseYear] = useState("");
@@ -33,8 +33,8 @@ const CreateMovieForm = ({ persons }) => {
   const [options, setOptions] = useState([]);
 
   useEffect(() => {
-    setOptions(mapOptions(persons));
-  }, [persons]);
+    setOptions(mapOptions(people));
+  }, [people]);
   const history = useHistory();
   const handleSubmit = async () => {
     try {
@@ -78,22 +78,22 @@ const CreateMovieForm = ({ persons }) => {
               placeholder="Release Year"
               type="number"
             />
-            {!!persons && (
+            {!!people && (
               <>
-                <PersonsDropdown
+                <PeopleDropdown
                   placeholder={"Casting"}
-                  persons={options}
-                  setPersons={setCasting}
+                  people={options}
+                  setPeople={setCasting}
                 />
-                <PersonsDropdown
+                <PeopleDropdown
                   placeholder="Directors"
-                  persons={options}
-                  setPersons={setDirectors}
+                  people={options}
+                  setPeople={setDirectors}
                 />
-                <PersonsDropdown
+                <PeopleDropdown
                   placeholder="Producers"
-                  persons={options}
-                  setPersons={setProducers}
+                  people={options}
+                  setPeople={setProducers}
                 />
               </>
             )}

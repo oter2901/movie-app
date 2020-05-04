@@ -297,7 +297,7 @@ Devise.setup do |config|
       ['DELETE', %r{^/logout$}]
     ]
 
-    jwt.expiration_time = 5.minutes.to_i
+    jwt.expiration_time = 3600.minutes.to_i
   end
   config.navigational_formats = []
 end

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Accordion, Card, Icon, List } from "semantic-ui-react";
-const PersonsAccordion = ({ name, persons, isActive, handleClick }) => {
+const PersonsAccordion = ({ name, people, isActive, handleClick }) => {
   return (
     <>
       <Accordion.Title active={isActive} index={0} onClick={handleClick}>
@@ -10,12 +10,12 @@ const PersonsAccordion = ({ name, persons, isActive, handleClick }) => {
       </Accordion.Title>
       <Accordion.Content active={isActive}>
         <List>
-          {persons.map((person) => (
+          {people.map((person) => (
             <List.Item key={person.id}>
               <List.Icon name="users" />
               <List.Content>
                 <Link
-                  to={`/persons/${person.id}`}
+                  to={`/people/${person.id}`}
                 >{`${person["first_name"]} ${person["last_name"]}`}</Link>
               </List.Content>
             </List.Item>
@@ -25,17 +25,15 @@ const PersonsAccordion = ({ name, persons, isActive, handleClick }) => {
     </>
   );
 };
-const MovieCard = ({ movie, persons }) => {
+
+const MovieCard = ({ movie, people }) => {
   const [activeIndex, setActiveIndex] = useState();
-  const casting = persons.filter(
-    (person) => person["movies_as_actor"].indexOf(movie.id) !== -1
-  );
-  const directors = persons.filter(
-    (person) => person["movies_as_director"].indexOf(movie.id) !== -1
-  );
-  const producers = persons.filter(
-    (person) => person["movies_as_producer"].indexOf(movie.id) !== -1
-  );
+  const filterValues = (key) =>
+    people.length &&
+    people.filter((person) => person[key].indexOf(movie.id) !== -1);
+  const casting = filterValues("movies_as_actor");
+  const directors = filterValues("movies_as_director");
+  const producers = filterValues("movies_as_producer");
   return (
     <Card>
       <Card.Content>
@@ -49,7 +47,7 @@ const MovieCard = ({ movie, persons }) => {
               name="Casting"
               isActive={activeIndex === 0}
               handleClick={() => setActiveIndex(0)}
-              persons={casting}
+              people={casting}
             />
           )}
           {!!directors.length && (
@@ -57,15 +55,15 @@ const MovieCard = ({ movie, persons }) => {
               name="Directors"
               isActive={activeIndex === 1}
               handleClick={() => setActiveIndex(1)}
-              persons={directors}
+              people={directors}
             />
           )}
           {!!producers.length && (
             <PersonsAccordion
-              name="producers"
+              name="Producers"
               isActive={activeIndex === 2}
               handleClick={() => setActiveIndex(2)}
-              persons={producers}
+              people={producers}
             />
           )}
         </Accordion>
@@ -73,11 +71,11 @@ const MovieCard = ({ movie, persons }) => {
     </Card>
   );
 };
-function MoviesList({ movies, persons }) {
+function MoviesList({ movies, people }) {
   return (
     <Card.Group centered>
       {movies.map((movie) => {
-        return <MovieCard key={movie.id} movie={movie} persons={persons} />;
+        return <MovieCard key={movie.id} movie={movie} people={people} />;
       })}
     </Card.Group>
   );

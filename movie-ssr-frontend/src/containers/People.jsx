@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Container, Header } from "semantic-ui-react";
 import axios from "../axios";
-import CreateMovieForm from "../components/CreateMovieForm";
-import MoviesList from "../components/MoviesList";
+import CreatePersonForm from "../components/CreatePersonForm";
+import PeopleList from "../components/PeopleList";
 
-function Movies() {
+function People() {
   const [movies, setMovies] = useState([]);
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,19 +22,21 @@ function Movies() {
   useEffect(() => {
     fetchData();
   }, []);
+  console.log(people);
   return (
     <Container text style={{ marginTop: "7em" }}>
-      <Header as="h1">Movies List</Header>
+      <Header as="h1">Persons List</Header>
       {localStorage.getItem("TOKEN") && (
-        <CreateMovieForm people={people} style={{ marginTop: "7em" }} />
+        <CreatePersonForm movies={movies} style={{ marginTop: "7em" }} />
       )}
-      {loading && movies ? (
+
+      {loading && people ? (
         <Header as="h2">LOADING...</Header>
       ) : (
-        <MoviesList movies={movies} people={people} />
+        <PeopleList movies={movies} people={people} />
       )}
     </Container>
   );
 }
 
-export default Movies;
+export default People;

@@ -33,3 +33,5 @@ movie_api/config/master.key
 **/build
 
 **/npm-debug.log*
+
+.env

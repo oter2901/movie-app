@@ -3,52 +3,63 @@ import { useHistory } from "react-router-dom";
 import { Button, Form, Grid, Header, Segment } from "semantic-ui-react";
 import axios from "../axios";
 
-const mapOptions = (persons) =>
-  persons.map((person) => ({
-    key: person.id,
-    text: `${person["first_name"]} ${person["last_name"]}`,
-    value: { person_id: person.id },
+const mapOptions = (movies) =>
+  movies.map((movie) => ({
+    key: movie.id,
+    text: movie.title,
+    value: movie.id,
   }));
 const SingleMovie = ({ match }) => {
-  const [movie, setMovie] = useState();
-  const [persons, setPersons] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [person, setPerson] = useState({
+    first_name: "",
+    last_name: "",
+    alias: "",
+    person_roles: [],
+  });
   const history = useHistory();
-  const fetchMovie = async (id) => {
+  const fetchPerson = async (id) => {
     try {
-      const response = await axios(`api/v1/movies/${id}`);
-      return setMovie(response.data);
+      const response = await axios(`api/v1/persons/${id}`);
+      return setPerson({ ...person, ...response.data });
     } catch (err) {
       console.log(err);
     }
   };
-  const fetchPersons = async () => {
+  const fetchMovies = async () => {
     try {
-      const response = await axios("api/v1/persons/");
-      return setPersons(response.data);
+      const response = await axios("api/v1/movies/");
+      return setMovies(response.data);
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    fetchMovie(match.params.id);
-    fetchPersons();
+    fetchPerson(match.params.id);
+    fetchMovies();
   }, []);
 
   const handleChange = (target) => {
-    return setMovie((prevState) => ({
+    return setPerson((prevState) => ({
       ...prevState,
       [target.name]: target.value,
     }));
   };
-  const handleDropDownChange = (value, property) => {
-    return setMovie((prevState) => ({ ...prevState, [property]: value }));
+  const handleDropDownChange = (value, role) => {
+    return setPerson((prevState) => ({
+      ...prevState,
+      person_roles: prevState.person_roles.concat({
+        movie_id: value,
+        role_type: role,
+      }),
+    }));
   };
 
   const handleSubmit = async () => {
     try {
-      const { id, ...rest } = movie;
-      await axios.put(`api/v1/movies/${id}`, {
-        movie: rest,
+      const { id, ...rest } = person;
+      await axios.put(`api/v1/persons/${id}`, {
+        person: rest,
       });
       history.push("/");
     } catch (err) {
@@ -57,58 +68,63 @@ const SingleMovie = ({ match }) => {
   };
   const handleDeleteMovie = async () => {
     try {
-      await axios.delete(`api/v1/movies/${movie.id}`);
+      await axios.delete(`api/v1/persons/${person.id}`);
       history.push("/");
     } catch (err) {
       history.push("/signin");
     }
   };
-
+  const options = !!movies && mapOptions(movies);
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Header as="h2">Movie</Header>
+      <Grid.Column style={{ maxWidth: 450 }} centered>
+        <Header as="h2">Person</Header>
         <Form size="large">
-          <Segment centered>
+          <Segment>
             <Form.Input
-              label="Movie Title"
-              value={movie && movie.title}
+              label="First name"
+              value={person && person.first_name}
               onChange={(e) => handleChange(e.target)}
-              name="title"
+              name="first_name"
               fluid
-              placeholder="Movie Title"
+              placeholder="Jhon"
             />
             <Form.Input
-              label="Release year"
+              label="Last name"
               onChange={handleChange}
-              value={movie && movie.release_year}
-              name="release_year"
+              value={person && person.last_name}
+              name="lastname"
               fluid
-              placeholder="Release year"
-              type="number"
+              placeholder="Doe"
+            />
+            <Form.Input
+              label="Alias"
+              onChange={handleChange}
+              value={person && person.alias}
+              name="alias"
+              fluid
+              placeholder="The Claw"
             />
             <Form.Dropdown
               clearable
               label="Casting"
-              onChange={(e, { value }) =>
-                handleDropDownChange(value, "casting")
-              }
+              onChange={(e, { value }) => handleDropDownChange(value, "ACTOR")}
               closeOnChange
               fluid
               multiple
-              options={mapOptions(persons)}
+              options={options}
               selection
             />
             <Form.Dropdown
               clearable
               closeOnChange
               onChange={(e, { value }) =>
-                handleDropDownChange(value, "directors")
+                handleDropDownChange(value, "DIRECTOR")
               }
               label="Directors"
               fluid
               multiple
-              options={mapOptions(persons)}
+              options={options}
               selection
             />
             <Form.Dropdown
@@ -116,11 +132,11 @@ const SingleMovie = ({ match }) => {
               closeOnChange
               label="Producers"
               onChange={(e, { value }) =>
-                handleDropDownChange(value, "producers")
+                handleDropDownChange(value, "PRODUCER")
               }
               fluid
               multiple
-              options={mapOptions(persons)}
+              options={options}
               selection
             />
             <div>

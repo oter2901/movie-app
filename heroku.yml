@@ -1,0 +1,6 @@
+build:
+  docker:
+    web: movie-ssr-frontend/Dockerfile
+    worker: movie-api/Dockerfile
+run:
+  web: ./lib/docker-entrypoint.sh

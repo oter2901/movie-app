@@ -7,4 +7,4 @@ fi
 
 rails db:migrate 2>/dev/null || bundle exec rake db:setup
 rails db:seed
-rails s -b 0.0.0.0 -p 80
+rails s -b 0.0.0.0 -p $PORT
