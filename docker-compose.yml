@@ -12,7 +12,7 @@ services:
       context: ./movie-api
     env_file: .env
     ports:
-      - "3000:80"
+      - "8080:80"
     depends_on:
       - postgres
 volumes:

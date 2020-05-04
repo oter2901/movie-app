@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   Button,
   Form,
@@ -14,6 +14,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const history = useHistory();
   useEffect(() => {
     if (email.trim() && password.trim()) {
       setIsButtonDisabled(false);
@@ -22,12 +23,19 @@ const Signup = () => {
     }
   }, [email, password]);
   const handleSubmit = async () => {
-    const response = await axios.post("/signup", { user: { email, password } });
-    if (response.status === 200) {
-      console.log(response);
+    try {
+      const response = await axios.post("/signup", {
+        user: { email, password },
+      });
       localStorage.setItem("TOKEN", response.headers.authorization);
+      axios.defaults.headers.common["Authorization"] =
+        response.headers.authorization;
+      history.push("/");
+    } catch (err) {
+      console.log(err);
     }
   };
+
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>

@@ -6,7 +6,7 @@ const MenuContainer = () => (
   <Menu fixed="top" inverted>
     <Container>
       <Menu.Item as="a" header>
-        Movies App
+        <NavLink to="/persons">Movies App </NavLink>
       </Menu.Item>
       <Menu.Item as="a">
         <NavLink to="/persons">Persons</NavLink>

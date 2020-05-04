@@ -6,7 +6,7 @@ import ReactDOMServer from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import App from "../src/App";
 
-const PORT = 8080;
+const PORT = 3000;
 const app = express();
 
 const router = express.Router();

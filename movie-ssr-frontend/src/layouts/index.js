@@ -5,6 +5,7 @@ import Movies from "../containers/Movies";
 import Persons from "../containers/Persons";
 import Signin from "../containers/Signin";
 import Signup from "../containers/Signup";
+import SingleMovie from "../containers/SingleMovie";
 
 const DefaultLayout = () => (
   <div>
@@ -15,6 +16,7 @@ const DefaultLayout = () => (
       <Route exact path="/signup" component={Signup} />
       <Route exact path="/movies" component={Movies} />
       <Route exact path="/persons" component={Persons} />
+      <Route exact path="/movies/:id" component={SingleMovie} />
     </Switch>
   </div>
 );
