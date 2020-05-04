@@ -156,4 +156,4 @@ I really tryed to keep it simple.
     }
   }
   ```
--[DELETE] api/v1/movies/:id
+- [DELETE] api/v1/movies/:id
