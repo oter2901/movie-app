@@ -11,14 +11,18 @@ services:
     build:
       context: ./movie-api
     env_file: .env
+    ports:
+      - "8080:80"
     depends_on:
       - postgres
-  web:
-    build:
-      context: ./movie-ssr-frontend
-    env_file: .env
-    depends_on:
-      - api
-      - postgres
+  # web:
+  #   build:
+  #     context: ./movie-ssr-frontend
+  #   env_file: .env
+  #   depends_on:
+  #     - api
+  #     - postgres
+  #   ports:
+  #     - "8080:80"
 volumes:
   postgres:
